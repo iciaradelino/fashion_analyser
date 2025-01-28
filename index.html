@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teachable Machine Project</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+</head>
+<body>
+    <div class="container">
+
+        <h1>Social Media Fashion Analyzer</h1>
+        <p class="description">
+                A machine learning model built with Teachable Machine to help Nike analyze social media videos and identify the most worn types of pants. This tool provides valuable insights into fashion trends to support data-driven decision-making.
+        </p>
+        <div class="demo-container">
+                <div class="subtitle">Teachable Machine Image Model</div>
+                <div class="instructions">Please click start and show the image or video you want to be analyzed </div>
+
+                <div class="button-container" >
+                    <button type="button" onclick="init()">Start</button>
+                    <button type="button" onclick="stop()">Stop</button>
+                </div>
+    
+                <div id="webcam-container"></div>
+                <div id="label-container"></div>
+        </div>
+
+        <div class="image-text-container">
+            <img src="nike_logo.png" alt="Nike logo" style="width: 200px; margin-left: 100px;">
+            <div>
+                <p class="subtitle" style="margin-left: 50px;"> How does this help Nike?</p>
+                <p style="margin-left: 50px; margin-right: 50px;">
+                    The model provides Nike with a powerful tool to analyze social media trends by identifying the most worn types of pants in videos. This insight allows Nike to understand consumer preferences and emerging fashion trends in real-time, enabling them to make data-driven decisions for product design, marketing strategies, and inventory planning. 
+                    
+                    By staying ahead of trends, Nike can create products that align with their audience's preferences, ensuring greater customer satisfaction and market relevance.
+                </p>
+            </div>  
+        </div>
+
+        <div class="text-image-container" style="display: flex; align-items: center; justify-content: space-between; margin-top: 50px; gap: 20px;">
+            <div>
+                <p class="subtitle" style="margin-left: 50px;">How was this model developed?</p>
+                <p style="margin-left: 50px; margin-right: 10px; margin-left: 50px;">
+                    Teachable Machine, an intuitive tool developed by Google, was used to create the model. It allows users to train machine learning models using simple drag-and-drop functionality, without requiring deep coding expertise. To train the model we used images from different types of jeans classified based on their color. These images were used to teach the model to recognize patterns and classify jean types accurately. The simplicity and effectiveness of Teachable Machine made it possible to build the model quickly while maintaining high performance.
+                </p>
+            </div>  
+            <div>
+                <img src="removed_logo.png" alt="TM logo" style="width: 250px; border-radius: 8px; margin-right: 50px;">
+            </div>
+        </div>
+
+        <div class="image-text-container" style="display: flex; align-items: center; justify-content: space-between; margin-top: 50px; gap: 20px;">
+            <img src="jeans.png" alt="Jeans" style="width: 200px;">
+            <div>
+                <p class="subtitle" style="margin-left: 50px;">What does the model exactly do?</p>
+                <p style="margin-left: 50px; margin-right: 50px;">
+                    The model uses computer vision to analyze videos from social media (TikTok, Instagram, Youtube...) and classify the types of jeans being worn (blue jeans, black jeans and white ones). By processing video frames, it identifies patterns and categorizes clothing types with high accuracy. This enables Nike to aggregate data on fashion trends quickly, providing a clear picture of what customers are wearing and how styles vary across different demographics, regions, and seasons.
+                </p>
+            </div>
+        </div>
+        
+        
+    </div>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    <script type="text/javascript">
+        const URL = "./model/";
+        let model, webcam, labelContainer, maxPredictions;
+        let running = false;
+        let savedPredictions = [];
+    
+        async function loop() {
+            if (running) {
+                webcam.update();
+                await predict();
+                window.requestAnimationFrame(loop);
+            }
+        }
+    
+        function stop() {
+            if (webcam) {
+                webcam.stop();
+                running = false;
+            }
+        }
+    
+        async function init() {
+            const modelURL = URL + "model.json";
+            const metadataURL = URL + "metadata.json";
+    
+            model = await tmImage.load(modelURL, metadataURL);
+            maxPredictions = model.getTotalClasses();
+    
+            webcam = new tmImage.Webcam(200, 200, true);
+            await webcam.setup();
+            await webcam.play();
+    
+            document.getElementById("webcam-container").appendChild(webcam.canvas);
+            labelContainer = document.getElementById("label-container");
+    
+            for (let i = 0; i < maxPredictions; i++) {
+                const labelDiv = document.createElement("div");
+                labelDiv.className = "label";
+                labelContainer.appendChild(labelDiv);
+            }
+    
+            running = true;
+            window.requestAnimationFrame(loop);
+        }
+    
+        async function predict() {
+            const prediction = await model.predict(webcam.canvas);
+            for (let i = 0; i < maxPredictions; i++) {
+                const classPrediction = `${prediction[i].className}: ${(prediction[i].probability * 100).toFixed(1)}%`;
+    
+                savedPredictions[i] = classPrediction;
+                const labelDiv = labelContainer.childNodes[i];
+                labelDiv.innerHTML = classPrediction;
+    
+                if (
+                    (prediction[i].className === "Blue jeans" ||
+                     prediction[i].className === "Black jeans" ||
+                     prediction[i].className === "White jeans") &&
+                    prediction[i].probability > 0.75
+                ) {
+                    labelDiv.style.backgroundColor = "green";
+                    labelDiv.style.color = "white";
+                } else {
+                    labelDiv.style.backgroundColor = "";
+                    labelDiv.style.color = "";
+                }
+            }
+        }
+    
+        function displaySavedPredictions() {
+            // Render saved predictions under the frozen frame
+            for (let i = 0; i < maxPredictions; i++) {
+                if (savedPredictions[i]) {
+                    labelContainer.childNodes[i].innerHTML = savedPredictions[i];
+                }
+            }
+        }
+    </script>
+    

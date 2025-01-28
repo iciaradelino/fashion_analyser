@@ -1,0 +1,199 @@
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;  /* Changed to Roboto for a clean, modern look */
+    background-color: #fafafa;  /* Soft off-white background */
+    color: #333;  /* Dark gray text for better readability */
+    line-height: 1.6;
+    padding: 20px 0; /* Space around the content */
+}
+
+/* Container Styling */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Header */
+h1 {
+    font-size: 3rem;  /* Adjusted size for a more balanced look */
+    font-weight: 5000;  /* Lighter weight for a clean feel */
+    color: #333;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    letter-spacing: 1px;  /* Slight letter-spacing for elegance */
+}
+
+/* Description Text */
+.description {
+    font-size: 1.1rem;
+    max-width: 900px;
+    margin: 0 auto 3rem auto;
+    text-align: center;
+    color: #666;  /* Lighter gray for a soft look */
+    line-height: 1.8;
+}
+
+/* Demo Container Styling */
+.demo-container {
+    width: 100%;
+    min-height: 400px;
+    background-color: #fff;  /* White background for contrast */
+    border-radius: 8px;
+    border: 1px solid #ddd;  /* Softer border */
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+/* Button Styling */
+button {
+    padding: 12px 25px;
+    font-size: 16px;
+    margin: 20px;
+    background-color: #707070;
+    color: #fff;
+    border: none;
+    border-radius: 25px;  /* Rounded edges for a smoother look */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Webcam Container */
+#webcam-container canvas {
+    margin-top: 5px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+}
+
+/* Prediction Labels */
+.prediction-label {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: left;
+    font-size: 14px;
+    background-color: #f9f9f9;  /* Light background for labels */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Instructions Text */
+.instructions {
+    font-size: 1rem;
+    max-width: 800px;
+    margin: 0 auto 3rem auto;
+    text-align: center;
+    color: #555;
+    margin-top: 10px;
+}
+
+/* Image & Text Section */
+.image-text-container {
+    display: flex;
+    align-items: center;
+    margin-top: 50px;
+    gap: 20px;
+}
+
+.subtitle {
+    font-size: 1.5rem;  /* Slightly larger text */
+    color: #333;
+    font-weight: 600;  /* Stronger weight for the subtitle */
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+/* Adjusting for the image container */
+.image-text-container img {
+    width: 200px;
+    height: auto;
+    border-radius: 8px;  /* Smooth rounded corners for the image */
+    object-fit: cover;
+}
+
+/* Extra Space Below Sections */
+.text-image-container {
+    margin-bottom: 40px;
+}
+
+.top-nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #939393;
+    padding: 10px 20px;
+    height: 60px;
+    margin-bottom: 30px;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+}
+
+.nav-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.nav-right {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-icon img {
+    width:45px;
+    height: 45px;
+    cursor: pointer;
+}
+
+.nav-icon:hover img {
+    filter: brightness(0.8);
+}
+
+
+/* Additional Adjustments for Smaller Screens */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    .container {
+        padding: 1rem;
+    }
+
+    .text-image-container {
+        flex-direction: column; /* Stacks the text and image on smaller screens */
+        align-items: center;
+    }
+
+    .image-text-container {
+        flex-direction: column; /* Stack image and text vertically */
+        gap: 15px;
+    }
+
+    .subtitle {
+        font-size: 1.1rem;
+    }
+}
